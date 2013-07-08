@@ -1,0 +1,21 @@
+<div id="page">
+
+    <div id="followers_all">
+      <% if @followers.size>0 %>
+          <h3>&nbsp;Your followers</h3>
+          <% @followers.each do |f| %>
+
+              <div id="follower_all">
+                <%= link_to f.name,"/user/profile?user=#{f.id}" %>
+              </div>
+              <br/>
+
+          <% end %>
+          <%= will_paginate @followers %>
+          <% else %>
+          <h3>You have no followers.</h3>
+      <% end %>
+
+    </div>
+
+</div>
