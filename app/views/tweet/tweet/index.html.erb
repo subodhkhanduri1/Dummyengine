@@ -1,0 +1,96 @@
+        <div id="page">
+
+          <div id="tweets">
+
+            <div id="tweet_head">
+              Latest Tweets
+            </div>
+
+            <% if @tweets.size>0
+               @tweets.each do |t|
+            %>
+            <div id="tweet">
+
+              <div id="user"><span class="username"><%= t.name %></span><span id="time"><%= t.created_at.in_time_zone('New Delhi').day %>/<%= t.created_at.in_time_zone('New Delhi').month %>/<%= t.created_at.in_time_zone('New Delhi').year %>&nbsp;<%= t.created_at.in_time_zone('New Delhi').hour %>:<%= t.created_at.in_time_zone('New Delhi').min %>:<%= t.created_at.in_time_zone('New Delhi').sec %>&nbsp;</span></div>
+              <div id="message"><%= t.message %></div>
+
+            </div>
+            <% end
+               else %>
+               <div id="tweet">
+                 No tweets to display! :(
+               </div>
+            <%
+               end
+            %>
+            <% if @no_of_tweets>10 %>
+                <span id="view_all_tweets_link"><%= link_to 'view all', tweet_show_path(session[:user_id]) %></span>
+            <% end %>
+            <br/>
+
+            <% if session[:messages] %>
+                Errors in form data:
+                <ul>
+                  <% session[:messages].each do |message| %>
+                      <li><div id="form_error" style="color: red;"><%= message %></div></li>
+                  <% end %>
+                </ul>
+                <% session.delete(:messages)%>
+            <% end %>
+            Post Your tweet
+            <br/>
+            <%= form_tag tweet_index_path, method: :post do %>
+
+                <%= text_area_tag :tweet_message, nil %>
+                <br/>
+                <%= submit_tag "Post", class: :submit %>
+            <% end %>
+            <br/><br/>
+          </div>
+
+          <div id="otherusers">
+
+            <div id="followers">
+            <% if @followers.size>0 %>
+                 <div id="head"><b>Followers</b></div>
+                <% @followers.each do |f| %>
+
+              <div id="follower">
+                <%= link_to f.name, user_path(f.id) %>
+              </div>
+
+              <% end %>
+              <% if @no_of_followers>5 %>
+
+                <span id="view_all_link"><%= link_to 'view all', follow_view_followers_path(session[:user_id]) , :page_id => 1 %></span>
+
+              <% end
+               else %>
+              <h3>You have no followers.</h3>
+            <% end %>
+             </div>
+
+
+
+            <div id="followees">
+            <% if @followees.size>0 %>
+                <div id="head"><b>People you follow</b></div>
+                <% @followees.each do |f| %>
+
+              <div id="followee">
+                <%= link_to f.name, user_path(f.id) %>
+              </div>
+
+
+              <% end %>
+              <% if @no_of_followees>5 %>
+                <span id="view_all_link"><%= link_to 'view all', follow_view_followees_path(session[:user_id]), :page_id => 1 %></span>
+              <% end
+               else %>
+                <h3>You have not followed anyone.</h3>
+            <% end %>
+            </div>
+
+          </div>
+
+        </div>

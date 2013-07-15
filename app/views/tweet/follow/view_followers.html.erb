@@ -6,7 +6,7 @@
           <% @followers.each do |f| %>
 
               <div id="follower_all">
-                <%= link_to f.name,"/user/profile?user=#{f.id}" %>
+                <%= link_to f.name, user_path(f.id) %>
               </div>
               <br/>
 

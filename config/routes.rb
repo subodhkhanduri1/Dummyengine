@@ -1,15 +1,16 @@
 Tweet::Engine.routes.draw do
 
-  root to: "tweet#home"
-=begin
-  resource :tweet do
-    member do
-      get 'tweet/post_tweet', :to => 'tweet#post_tweet'
-      get 'tweet/home', :to => 'tweet#home'
-      get 'tweet/view_tweets', :to => 'tweet#view_tweets'
-    end
+  root to: "tweet#index"
+
+  resources :tweet, only: [:index, :create] do
+    get "show", to: "tweet#show"
   end
 
+  resources :follow, only: [:create, :destroy] do
+    get "view_followers", to: "follow#view_followers"
+    get "view_followees", to: "follow#view_followees"
+  end
+=begin
   resource :follow do
     member do
       get 'follow/view_followers', :to => 'follow#view_followers'
@@ -19,7 +20,7 @@ Tweet::Engine.routes.draw do
     end
   end
 =end
-
+=begin
   match 'tweet/post_tweet', :to => 'tweet#post_tweet'
   match 'tweet/home', :to => 'tweet#home'
   match 'tweet/view_tweets', :to => 'tweet#view_tweets'
@@ -28,7 +29,7 @@ Tweet::Engine.routes.draw do
   match 'follow/view_followees', :to => 'follow#view_followees'
   match 'follow/create', :to => 'follow#create'
   match 'follow/delete', :to => 'follow#delete'
-
+=end
 =begin
     match '/user/login', :to => 'user#login'
     match '/user/home', :to => 'user#home'
